@@ -1,0 +1,3 @@
+[submodule "telegram-history-dump"]
+	path = telegram-history-dump
+	url = https://github.com/tvdstaaij/telegram-history-dump.git
