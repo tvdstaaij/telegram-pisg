@@ -30,6 +30,7 @@ while read -r -d $'\0' CHAN_LOG_DIR; do
     pisg -co pisg.cfg -ch "$CHAN_NAME" -o "$CHAN_OUT_DIR/index.html" -l "$CHAN_LOG_DIR/*.log" || exit $?
     source hooks/after-pisg.inc.sh
 done
+rm pisg.cfg
 
 source hooks/before-exit.inc.sh
 exit 0
