@@ -11,26 +11,26 @@ TG_PID=$!
 sleep $TG_STARTUP_TIME
 
 # Run backup
-rm "$LOG_DIR/*/*.*"
-rmdir "$LOG_DIR/*"
+rm -r "$LOG_DIR"/* 2>/dev/null
 source hooks/before-dump.inc.sh
 $HISTDUMP_DIR/telegram-history-dump.rb -k -c dump-config.json5 || exit $?
-kill $TG_PID # Just in case it didn't shut down properly
+kill $TG_PID 2>/dev/null # Just in case it didn't shut down properly
 source hooks/after-dump.inc.sh
 
 # Run pisg
 mkdir -p "$OUTPUT_DIR" 2>/dev/null
 find "$LOG_DIR" -maxdepth 1 -mindepth 1 -type d -print0 |
 while read -r -d $'\0' CHAN_LOG_DIR; do
-    CHAN_NAME=`basename "$CHAN_LOG_DIR"`
-    CHAN_OUT_DIR="$OUTPUT_DIR/$CHAN_NAME"
+    CHAN_DIRNAME=`basename "$CHAN_LOG_DIR"`
+    CHAN_OUT_DIR="$OUTPUT_DIR/$CHAN_DIRNAME"
+    CHAN_NAME=$(< "$CHAN_LOG_DIR/chat_title")
     mkdir "$CHAN_OUT_DIR" 2>/dev/null
     cat pisg.cfg.tpl "$CHAN_LOG_DIR/usermap.cfg" > pisg.cfg
     source hooks/before-pisg.inc.sh
     pisg -co pisg.cfg -ch "$CHAN_NAME" -o "$CHAN_OUT_DIR/index.html" -l "$CHAN_LOG_DIR/*.log" || exit $?
     source hooks/after-pisg.inc.sh
 done
-rm pisg.cfg
+rm pisg.cfg 2>/dev/null
 
 source hooks/before-exit.inc.sh
 exit 0
