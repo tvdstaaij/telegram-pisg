@@ -27,7 +27,7 @@ while read -r -d $'\0' CHAN_LOG_DIR; do
     mkdir "$CHAN_OUT_DIR" 2>/dev/null
     cat pisg.cfg.tpl "$CHAN_LOG_DIR/usermap.cfg" > pisg.cfg
     source hooks/before-pisg.inc.sh
-    pisg -co pisg.cfg -ch "$CHAN_NAME" -o "$CHAN_OUT_DIR/index.html" -l "$CHAN_LOG_DIR/*.log" || exit $?
+    $PISG_BIN -co pisg.cfg -ch "$CHAN_NAME" -o "$CHAN_OUT_DIR/index.html" -l "$CHAN_LOG_DIR/*.log" || exit $?
     source hooks/after-pisg.inc.sh
 done
 rm pisg.cfg 2>/dev/null
