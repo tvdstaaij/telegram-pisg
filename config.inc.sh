@@ -7,8 +7,8 @@ PISG_BIN=pisg
 # Default assumes it is cloned in this directory
 HISTDUMP_DIR=telegram-history-dump
 
-# Path to find telegram-history-dump output
-LOG_DIR=$HISTDUMP_DIR/output
+# Path to find telegram-history-dump pisg formatter output
+LOG_DIR=$HISTDUMP_DIR/output/formatted/pisg
 
 # Path for pisg statistics output files
 OUTPUT_DIR=stats
