@@ -13,7 +13,7 @@ sleep $TG_STARTUP_TIME
 # Run backup
 rm -r "$LOG_DIR"/* 2>/dev/null
 source hooks/before-dump.inc.sh
-$HISTDUMP_DIR/telegram-history-dump.rb -k -c dump-config.json5 || exit $?
+$HISTDUMP_DIR/telegram-history-dump.rb -k -c dump-config.yaml || exit $?
 kill $TG_PID 2>/dev/null # Just in case it didn't shut down properly
 source hooks/after-dump.inc.sh
 
