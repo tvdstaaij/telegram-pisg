@@ -6,16 +6,16 @@ cd ${0%/*}
 source config.inc.sh
 
 # Start telegram-cli and wait for a bit
-$TG_BIN -P $TG_PORT --json $TG_OPTS >/dev/null &
-TG_PID=$!
-sleep $TG_STARTUP_TIME
+#$TG_BIN -P $TG_PORT --json $TG_OPTS >/dev/null &
+#TG_PID=$!
+#sleep $TG_STARTUP_TIME
 
 # Run backup
-rm -r "$LOG_DIR"/* 2>/dev/null
-source hooks/before-dump.inc.sh
-$HISTDUMP_DIR/telegram-history-dump.rb -k -c dump-config.yaml || exit $?
-kill $TG_PID 2>/dev/null # Just in case it didn't shut down properly
-source hooks/after-dump.inc.sh
+#rm -r "$LOG_DIR"/* 2>/dev/null
+#source hooks/before-dump.inc.sh
+#$HISTDUMP_DIR/telegram-history-dump.rb -k -c dump-config.yaml || exit $?
+#kill $TG_PID 2>/dev/null # Just in case it didn't shut down properly
+#source hooks/after-dump.inc.sh
 
 # Run pisg
 mkdir -p "$OUTPUT_DIR" 2>/dev/null
@@ -27,7 +27,7 @@ while read -r -d $'\0' CHAN_LOG_DIR; do
     mkdir "$CHAN_OUT_DIR" 2>/dev/null
     cat pisg.cfg.tpl "$CHAN_LOG_DIR/usermap.cfg" > pisg.cfg
     source hooks/before-pisg.inc.sh
-    $PISG_BIN -co pisg.cfg -ch "$CHAN_NAME" -o "$CHAN_OUT_DIR/index.html" -l "$CHAN_LOG_DIR/*.log" || exit $?
+    $PISG_BIN -co pisg.cfg -ch "$CHAN_NAME" -o "$CHAN_OUT_DIR/index.html" -l "$(printf '%q' "$CHAN_LOG_DIR")/*.log" || exit $?
     source hooks/after-pisg.inc.sh
 done
 rm pisg.cfg 2>/dev/null
